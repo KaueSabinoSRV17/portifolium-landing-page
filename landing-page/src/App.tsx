@@ -1,4 +1,6 @@
+import { Card } from "./components/Card";
+
 export function App() {
-    return <h1>Hello World</h1>
+    return <Card>Filho teste</Card>
 }
 
