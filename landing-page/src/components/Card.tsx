@@ -1,9 +1,17 @@
-import { PropsWithChildren, ReactElement, ReactNode, ReactPropTypes } from "react"
+import { PropsWithChildren } from "react"
 
 interface CardProps extends PropsWithChildren {
-
+    cardTitle?: string
 }
 
-export function Card({ children }: CardProps) {
-    return <div className="bg-card-grey text-text-grey">{children}</div>
+export function Card({ children, cardTitle }: CardProps) {
+    return (
+       <>
+            <div 
+                className="bg-card-grey text-text-grey text-sm rounded-[20px] py-8 px-5 my-8 flex flex-col justify-center items-center">
+                <h3 className="text-xl font-bold text-left mb-5">{cardTitle}</h3>
+                {children}
+            </div>
+       </>
+    )
 }
