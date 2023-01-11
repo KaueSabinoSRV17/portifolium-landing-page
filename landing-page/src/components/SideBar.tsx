@@ -7,7 +7,7 @@ interface SideBarProps extends PropsWithChildren {
 
 export function SideBar({children}: SideBarProps) {
     return (
-        <aside className="flex-1 p-1">
+        <aside className="ml-10 p-1">
             {children}
         </aside>
     )
