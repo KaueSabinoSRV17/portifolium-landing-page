@@ -1,10 +1,12 @@
-import { Card } from "./components/Card";
-import { SideBar } from "./components/SideBar";
-import { ProfileImage } from "./components/ProfileImage";
-import { useEffect, useState } from "react";
+import { Card } from './components/Card';
+import { SideBar } from './components/SideBar';
+import { ProfileImage } from './components/ProfileImage';
+import { useEffect, useState } from 'react';
 
-import axios from "axios";
-import { StackItemList } from "./components/StackItemList";
+import axios from 'axios';
+import { StackItemList } from './components/StackItemList';
+import { ExperienceList } from './components/ExperienceList';
+import { Title } from './components/Title';
 
 export function App() {
 
@@ -28,7 +30,7 @@ export function App() {
     type: string;
     site_admin: boolean;
     name: string;
-    company?: null;
+    company: string | undefined;
     blog: string;
     location: string;
     email?: null;
@@ -43,7 +45,7 @@ export function App() {
   }
 
   const [user, setUser] = useState<User>();
-  const [userName, setUserName] = useState<string>("KaueSabinoSRV17");
+  const [userName, setUserName] = useState<string>('KaueSabinoSRV17');
 
   useEffect(() => {
     const apiUrl = `https://api.github.com/users/${userName}`;
@@ -51,24 +53,52 @@ export function App() {
     axios.get(apiUrl).then((user) => setUser(user.data));
   }, [userName]);
 
-  return (
-    <SideBar>
-      <Card>
-        <ProfileImage borderColor="image-border-green" />
-        <h3 className="mt-8 mb-3 text-2xl">{user?.name}</h3>
-        <p className="text-sm">{user?.bio}</p>
-      </Card>
-      <Card>
-        <li>{user?.location}</li>
-        <li>{user?.company}</li>
-        <li>{user?.login}</li>
-      </Card>
-      <Card cardTitle="Tecnologias">
-        <StackItemList />
-      </Card>
-      <Card cardTitle="Experiências">
+  const truncatedName = user?.name.split(' ').slice(0, 2).join(' ')
 
-      </Card>
-    </SideBar>
+  return (
+    <main className='flex gap-[60px]'>
+      <SideBar>
+        <Card>
+          <ProfileImage borderColor='image-border-green' />
+          <h3 className='mt-8 mb-[10px] text-2xl text-center font-bold'>{truncatedName}</h3>
+          <p className='text-sm text-center mb-4'>{user?.bio}</p>
+        </Card>
+        <Card>
+          <ul>
+            <li>{user?.location}</li>
+            <li>{user?.company}</li>
+            <li>{user?.login}</li>
+          </ul>
+        </Card>
+        <Card cardTitle='Tecnologias'>
+          <StackItemList />
+        </Card>
+        <Card cardTitle='Experiências'>
+          <ExperienceList experiences={[{
+            title: user?.company,
+            startDate: new Date(2022, 7, 4),
+            description: 'Java Fullstack Developer'
+          }]} />
+        </Card>
+        <Card cardTitle='Educação'>
+          <ExperienceList experiences={[
+            {
+              title: 'Unicesumar',
+              startDate: new Date(2022, 2, 1),
+              description: 'Análise e Desenvolvimento de Sistemas'
+            },
+            {
+              title: 'Senai',
+              startDate: new Date(2020, 8, 3),
+              finishDate: new Date(2022, 4, 10),
+              description: 'Técnico em Desenvolvimento Web'
+            }
+          ]}/>
+        </Card>
+      </SideBar>
+      <section className='w-full'>
+        <Title>Meus Projetos</Title>
+      </section>
+    </main>
   );
 }
